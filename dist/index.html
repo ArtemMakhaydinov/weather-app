@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="./bundle.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <div class="search_bar">
+        <form class="search_form">
+          <input
+            type="text"
+            name="city"
+            class="search_input"
+            placeholder="Search City"
+          />
+          <input type="submit" class="search_submit" />
+        </form>
+      </div>
+      <div class="content">
+        <h1 class="content_location"></h1>
+        <div class="content_forecast_container">
+          <span class="content_degrees"></span>
+          <div class="content_details">
+            <p class="details condition"></p>
+            <p class="details feels_like"></p>
+            <p class="details humidity"></p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
