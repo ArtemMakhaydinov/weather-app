@@ -32,10 +32,12 @@ const handleForecast = async (city: string) => {
     if (response.cod !== 200) {
       throw response.message;
     };
-    const forecast = Object.assign(<Forecast>{}, response!);
+    const forecast = Object.assign(<Forecast>{}, response);
     lastCity = forecast.name;
     localStorage.setItem('city', lastCity);
     renderForecast(forecast);
+    renderTemperatureUnit(currentUnit);
+    renderUnitButtons(currentUnit);
   } catch (error) {
     renderError(error);
   };
@@ -54,7 +56,7 @@ export const handleUnitChange = function (this: any) {
   currentUnit = this.dataset.unit;
   localStorage.setItem('unit', currentUnit);
   renderTemperatureUnit(currentUnit);
-  renderUnitButtons(this);
+  renderUnitButtons(currentUnit);
   handleForecast(lastCity);
 };
 
