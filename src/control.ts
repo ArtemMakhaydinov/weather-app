@@ -1,6 +1,10 @@
 import { getWeatherData } from "./API";
 import { getFormData } from "./form";
-import { renderForecast } from "./render";
+import { renderError, renderForecast, renderTemperatureUnit, renderUnitButtons } from "./render";
+import { getSettings } from "./storage";
+
+let lastCity = 'Ivanovo';
+let currentUnit = 'metric';
 
 export interface Forecast {
   name: string;
@@ -19,58 +23,52 @@ export interface Forecast {
     {
       description: string;
     }
-  ]
+  ];
 };
 
 const handleForecast = async (city: string) => {
-  const response = await getWeatherData(city);
-  const forecast = Object.assign(<Forecast>{}, response!)
-  renderForecast(forecast);
+  try {
+    const response = await getWeatherData(city, currentUnit);
+    if (response.cod !== 200) {
+      throw response.message;
+    };
+    const forecast = Object.assign(<Forecast>{}, response!);
+    lastCity = forecast.name;
+    localStorage.setItem('city', lastCity);
+    renderForecast(forecast);
+  } catch (error) {
+    renderError(error);
+  };
 };
 
-export const handleNewInput = (defaultCity: string | null): void => {
-  let city = defaultCity ? defaultCity : getFormData();
+export const handleNewInput = (event: Event): void => {
+  event.preventDefault();
+  let city = getFormData();
   handleForecast(city);
 };
 
-/* {
-    base: "stations"
-clouds:
-    all: 7
-[[Prototype]]: Object
-    cod: 200
-coord:
-    lat: 56.9942
-    lon: 40.9858
-[[Prototype]]: Object
-dt: 1660236291
-id: 555312
-main:
-    feels_like: 289.54
-    grnd_level: 1009
-    humidity: 60
-    pressure: 1024
-    sea_level: 1024
-    temp: 290.21
-    temp_max: 290.21
-    temp_min: 290.21
-[[Prototype]]: Object
-name: "Ivanovo"
-sys:
-    country: "RU"
-    sunrise: 1660181675
-    sunset: 1660237690
-[[Prototype]]: Object
-timezone: 10800
-visibility: 10000
-weather: Array(1)
-0: {id: 800, main: 'Clear', description: 'clear sky', icon: '01d'}
-length: 1
-[[Prototype]]: Array(0)
-wind:
-    deg: 323
-    gust: 1.87
-    speed: 1.88
-[[Prototype]]: Object
-[[Prototype]]: Object
-} */
+export const handleUnitChange = function (this: any) {
+  if (currentUnit === this.dataset.unit) {
+    return;
+  };
+  currentUnit = this.dataset.unit;
+  localStorage.setItem('unit', currentUnit);
+  renderTemperatureUnit(currentUnit);
+  renderUnitButtons(this);
+  handleForecast(lastCity);
+};
+
+const handleLocalSettings = () =>  {
+  const localSettings = getSettings();
+  if (localSettings.city) {
+    lastCity = localSettings.city;
+  };
+  if (localSettings.unit) {
+    currentUnit = localSettings.unit;
+  };
+};
+
+export const loadFreshPage = () => {
+  handleLocalSettings();
+  handleForecast(lastCity);
+};

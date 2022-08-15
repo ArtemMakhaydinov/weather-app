@@ -1,6 +1,6 @@
-import { handleNewInput } from "./control";
-import { handleSubmit} from "./UI";
+import {loadFreshPage, handleNewInput, handleUnitChange } from "./control";
 
+window.onload = loadFreshPage;
 
-document.onload = handleNewInput('Ivanovo')!;
-document.querySelector('.search_form')?.addEventListener('submit', handleSubmit);
+document.querySelector('.search_form')?.addEventListener('submit', handleNewInput);
+document.querySelectorAll('.unit_button').forEach(e => e.addEventListener('click', handleUnitChange));
