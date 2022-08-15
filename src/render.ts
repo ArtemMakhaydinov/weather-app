@@ -34,10 +34,11 @@ export const renderError = (message: any) => {
   alert.textContent = formattedMessage;
 };
 
-export const renderUnitButtons = (button: HTMLButtonElement) => {
+export const renderUnitButtons = (unit: string) => {
   const buttons = document.querySelectorAll('.unit_button').forEach(e => {
     e.classList.remove('pressed');
   });
+  const button = document.querySelector(`.${unit}`)!;
   button.classList.add('pressed');
 };
 

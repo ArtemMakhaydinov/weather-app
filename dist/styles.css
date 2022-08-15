@@ -53,14 +53,14 @@ main {
   cursor: pointer;
 }
 
-.celsius {
+.metric {
   border: none;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   background-color: rgba(231, 246, 242, 0.5);
 }
 
-.fahrenheit {
+.imperial {
   border: none;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
